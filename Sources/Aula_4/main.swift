@@ -1,3 +1,5 @@
 import Foundation
 
-print("Aula 4 de Swift!!")
+for i in (0...6).reversed() {
+    print(i)
+}
