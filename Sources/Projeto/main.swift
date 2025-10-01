@@ -167,3 +167,88 @@ class AulaColetiva: Aula {
         return "\(super.getDescricao())\nVagas ocupadas: \(alunosInscritos.count) CapacidadeMaxima: \(capacidadeMaxima)"
     }
 }
+
+class Academia {
+
+    let nome: String
+    var alunosMatriculados: [String: Aluno] = [:]
+    var instrutoresContratados: [String: Instrutor] = [:]
+    var aparelhos: [Aparelho] = []
+    var aulasDisponiveis: [Aula] = []
+
+    init(nome: String) {
+        self.nome = nome
+    }
+
+    convenience init() {
+        self.init(nome: "Academia Sem Nome")
+    }
+
+    func adicionarAparelho(_ aparelho: Aparelho) {
+        aparelhos.append(aparelho)
+    }
+
+    func adicionarAula(_ aula: Aula) {
+        aulasDisponiveis.append(aula)
+    }
+
+    func contratarInstrutor(_ instrutor: Instrutor) {
+        if (instrutoresContratados.keys.contains(instrutor.email)) {
+            print("Instrutor com email: \(instrutor.email) já contratado")
+        }
+        else {
+            instrutoresContratados[instrutor.email] = instrutor
+            print("Instrutor contratado com sucesso!")
+        }
+    }
+
+    func matricularAluno(_ aluno: Aluno) {
+        if (alunosMatriculados.keys.contains(aluno.matricula)) {
+            print("Aluno com matrícula: \(aluno.matricula) já está matriculado")
+        }
+        else {
+            alunosMatriculados[aluno.matricula] = aluno
+            print("Aluno matriculado com sucesso!")
+        }
+    }
+
+    func matricularAluno(nome: String, email: String, matricula: String, plano: Plano) -> Aluno {
+        let novoAluno = Aluno(nome: nome, email: email, matricula: matricula, plano: plano)
+        matricularAluno(novoAluno)
+        return novoAluno
+    }
+
+    func buscarAluno(porMatricula matricula: String) -> Aluno? {    
+        if (alunosMatriculados.keys.contains(matricula)) {
+            return alunosMatriculados[matricula]
+        }
+        return nil
+    }
+
+    func listarAlunos() {
+        if alunosMatriculados.isEmpty {
+            print("Nenhum aluno matriculado.")
+        }
+        else {
+            print("--- Lista de Alunos Matriculados ---")
+            for aluno in alunosMatriculados.values.sorted(by: {$0.nome.lowercased() < $1.nome.lowercased()}) {
+                print(aluno.getDescricao())
+            }
+            print("--- Fim da lista de Alunos Matriculados ---")
+        }
+    }
+
+    func listarAulas() {
+        if aulasDisponiveis.isEmpty {
+            print("Nenhuma aula disponível.")
+        }
+        else {
+            print("--- Lista de Aulas Disponíveis ---")
+            for aula in aulasDisponiveis.sorted(by: {$0.nome.lowercased() < $1.nome.lowercased()}) {
+                print(aula.getDescricao())
+            }
+            print("--- Fim da lista de aulas disponíveis ---")
+        }
+    }
+
+}
